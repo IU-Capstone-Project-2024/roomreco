@@ -1,0 +1,42 @@
+name: Submodule Bot
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch: ~
+
+jobs:
+  sync-api:
+    name: API Submodule Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submodule Sync
+        uses: mheap/submodule-sync-action@v1
+        with:
+          path: api
+          ref: main
+          pr_branch: api-submodule-update
+          target_branch: main
+
+  sync-research:
+    name: Research Submodule Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submodule Sync
+        uses: mheap/submodule-sync-action@v1
+        with:
+          path: research
+          ref: main
+          pr_branch: research-submodule-update
+          target_branch: main
+
+  sync-web:
+    name: Web Submodule Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submodule Sync
+        uses: mheap/submodule-sync-action@v1
+        with:
+          path: web
+          ref: main
+          pr_branch: web-submodule-update
+          target_branch: main
