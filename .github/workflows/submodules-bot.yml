@@ -1,42 +1,31 @@
+---
 name: Submodule Bot
+
 on:
   schedule:
     - cron: "0 8 * * *"
   workflow_dispatch: ~
 
 jobs:
-  sync-api:
-    name: API Submodule Sync
+  build:
+    name: Submodule update
     runs-on: ubuntu-latest
-    steps:
-      - name: Submodule Sync
-        uses: mheap/submodule-sync-action@v1
-        with:
-          path: api
-          ref: main
-          pr_branch: api-submodule-update
-          target_branch: main
+    env:
+      PARENT_REPOSITORY: "IU-Capstone-Project-2024/roomreco"
+      CHECKOUT_BRANCH: "main"
+      PR_AGAINST_BRANCH: "main"
+      OWNER: "IU-Capstone-Project-2024"
 
-  sync-research:
-    name: Research Submodule Sync
-    runs-on: ubuntu-latest
     steps:
-      - name: Submodule Sync
-        uses: mheap/submodule-sync-action@v1
-        with:
-          path: research
-          ref: main
-          pr_branch: research-submodule-update
-          target_branch: main
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-  sync-web:
-    name: Web Submodule Sync
-    runs-on: ubuntu-latest
-    steps:
-      - name: Submodule Sync
-        uses: mheap/submodule-sync-action@v1
+      - name: run action
+        id: run_action
+        uses: releasehub-com/github-action-create-pr-parent-submodule@v1
         with:
-          path: web
-          ref: main
-          pr_branch: web-submodule-update
-          target_branch: main
+          github_token: ${{ secrets.TOKEN }}
+          parent_repository: ${{ env.PARENT_REPOSITORY }}
+          checkout_branch: ${{ env.CHECKOUT_BRANCH}}
+          pr_against_branch: ${{ env.PR_AGAINST_BRANCH }}
+          owner: ${{ env.OWNER }}
